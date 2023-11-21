@@ -1,30 +1,63 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+import * as THREE from 'three';
+
+
+// 创建一个场景
+const scene = new THREE.Scene();
+
+// 创建一个相机
+
+const camera = new THREE.PerspectiveCamera(
+    30,// 视角
+    window.innerWidth / window.innerHeight,// 宽高比
+    0.1,// 近平面
+    1000,// 远平面
+)
+
+// 创建渲染器
+const renderer = new THREE.WebGLRenderer()
+renderer.setSize(window.innerWidth,window.innerHeight);
+document.body.appendChild(renderer.domElement)
+
+// 创建几何体
+
+const geometry = new THREE.BoxGeometry(1,1,1)
+
+// 创建材质
+const material = new THREE.MeshBasicMaterial({color:0xffffff})
+
+// 创建网格
+
+const cube = new THREE.Mesh(geometry,[material,material,material,material,material,material])
+ 
+// 将网格添加到场景中  
+scene.add(cube)
+
+// 设置相机位置
+camera.position.z = 5;
+camera.lookAt(0,0,0)
+ 
+
+ 
+// 渲染函数
+
+function  animate(){
+    requestAnimationFrame(animate)
+    cube.rotation.x += 0.01
+    cube.rotation.y += 0.01
+    cube.rotation.z += 0.01
+    renderer.render(scene,camera)
+}
+// 渲染
+
+animate()
+
+
+
 </script>
 
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
 
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
 </style>
